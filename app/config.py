@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 dotenv.load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 def to_bool(s):
-    r = False 
+    r = False
     if(s.lower() == "true"):
         r = True
     elif(s.lower() == "false"):
@@ -14,3 +14,5 @@ def to_bool(s):
 
 class Config():
     DEBUG = to_bool(os.environ.get("DEBUG"))
+    PYTHONHASHSEED=to_bool(os.environ.get("PYTHONHASHSEED"))
+~                                                                 
