@@ -1,0 +1,32 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Bienvenue sur le site de la prosopographie nobiliaire en Île-de-France</h1>
+
+        {%if donnees%}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Premier individu</th>
+                    <th scope="col">Chef de faction</th>
+                    <th scope="col">Elément de carrière</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for carriere in donnees%}
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>{{carriere.nomIndividu_1}}</td>
+                    <td>{{carriere.nomIndividu_2}}</td>
+                    <td>{{carriere.Element_de_carriere}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        {%endif%}
+    </div>
+
+{% endblock %}
