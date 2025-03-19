@@ -25,27 +25,13 @@ class IndIndividus(db.Model):
     IND_documentation=db.Column(db.Text)
     IND_comm=db.Column(db.Text)
 
-
-#Relations avec d'autres individus (les patrons des institutions où se déroule la carrière) via la table carriere
-    relation_carriere_sortante=db.relationship( 
-        'CrrCarriere',
-        foreign_keys='CrrCarriere.Individu_source_id',
-        back_populates='Individu_source',
-        lazy="dynamic"
-    )
-    relation_carriere_entrante=db.relationship( 
-        'CrrCarriere',
-        foreign_keys='CrrCarriere.Individu_target_id',
-        back_populates='Individu_target',
-        lazy="dynamic"
-    )
 class CrrCarriere(db.Model):
     __tablename__="crrcarriere"
     CRR_id=db.Column(db.Integer,primary_key=True)
-    Individu_source_id=db.Column(db.Integer, db.ForeignKey('IndIndividus.IND_id'), primary_key=True)
-    Individu_target_id=db.Column(db.Integer, db.ForeignKey('IndIndividus.IND_id'), primary_key=True)
-    TYP_type_6=db.Column(db.Integer,db.ForeignKey('TypType6.TYP_id_6'), primary_key=True)
-    REF_id=db.Column(db.Integer,db.ForeignKey('RefDocuments.REF_id'), primary_key=True)
+    IND_id_1=db.Column(db.Integer, db.ForeignKey('IndIndividus.IND_id'), primary_key=True)
+    IND_id_2=db.Column(db.Integer, db.ForeignKey('IndIndividus.IND_id'), primary_key=True)
+    TYP_type_6=db.Column(db.Integer,db.ForeignKey('typtype6.TYP_id_6'), primary_key=True)
+    REF_id=db.Column(db.Integer,db.ForeignKey('refdocuments.REF_id'), primary_key=True)
     CRR_dat_deb=db.Column(db.Text)
     CRR_dat_fin=db.Column(db.Text)
     CRR_lib=db.Column(db.Text)
@@ -53,32 +39,27 @@ class CrrCarriere(db.Model):
     CRR_comment=db.Column(db.Text)
     CRR_fiab=db.Column(db.Integer)
 
-    #relations entre les champs
 
-    Individu_source = db.relationship(
-        'IndIndividus',
-        foreign_keys='IndIndividus.IND_id',
-        back_populates='relation_carriere_sortante',
-        lazy="dynamic"
-        )
-    
-    Individu_target = db.relationship(
-        'IndIndividus',
-        foreign_keys='IndIndividus.Ind_id',
-        back_populates='relation_carriere_entrante',
-        lazy="dynamic"
-        )
-    
-    type_relation = db.relationship(
-        'TypType6',
-        foreign_keys='TypType6.TYP_id_6',
-        back_populates='carrieres_nommages',
-        lazy='dynamic'
-        )
-    
-    references = db.relationship(
-        'RefDocuments', 
-        back_populates='relations',
+#Relations avec d'autres individus (les patrons des institutions où se déroule la carrière) via la table carriere
+relation_carriere_sortante = db.relationship(
+    "CrrCarriere",
+    foreign_keys=[CrrCarriere.IND_id_1],
+    primaryjoin="IndIndividus.IND_id == CrrCarriere.IND_id_1",
+    backref="ind_individus_sortante",
+    lazy="dynamic"
+    )
+
+relation_carriere_entrante = db.relationship(
+    "CrrCarriere",
+    foreign_keys=[CrrCarriere.IND_id_2],
+    primaryjoin="IndIndividus.IND_id == CrrCarriere.IND_id_2",
+    backref="ind_individus_entrante",
+    lazy="dynamic"
+    )
+#relations entre les champs  
+references = db.relationship(
+        'refdocuments', 
+        backref='references',
         lazy='dynamic'
         )
 
@@ -90,10 +71,17 @@ class TypType6(db.Model):
     TYP_lib=db.Column(db.Text)
     TYP_fiab=db.Column(db.Integer)
 
-    #relations entre les champs
-    carrieres_nommages=db.relationship(
+#relations entre les champs
+type_relation = db.relationship(
+        'TypType6',
+        foreign_keys=[TypType6.TYP_id_6],
+        backref='TypType6',
+        lazy='dynamic'
+        )
+    
+carrieres_nommages=db.relationship(
         'CrrCarriere',
-        backref='type_relation',
+        backref='carrieres_nommages',
         lazy='dynamic'
         )
 

@@ -10,8 +10,8 @@ def all_carrieres():
     for r in results:
         print(r )
         print(type(r))
-        print(r.Individu_source_id)
-        print(r.Individu_target_id)
+        print(r.IND_id_1)
+        print(r.IND_id_2)
         print(type(r.TYP_type_6))
     
     ''' donnees = []
