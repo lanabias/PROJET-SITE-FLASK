@@ -7,7 +7,7 @@ Pour installer-python-3
     Dans le terminal, tapez : sudo apt-get install python3
     Entrez votre mot de passe, puis tapez Y pour lancer l’installation (NdT : ou sudo apt-get -y install python3 pour éviter d’avoir à taper Y à chaque fois). Notez qu’il est fort probable que Python soit déjà installé (NdT: la commande dpkg -l python3 permet de savoir si Python 3 est déjà installé).
 
-4) Installer les modules pip et virtualenv :
+4) Installer les modules pip et virtualenv : exécuter sudo apt install python3-pip et sudo apt install virtualenv
 
 5) Création de l'environnement virtuel : exécuter la commande virtualenv env -p python3
 6) INstaller la base de données en .sqlite au même niveau que le fichier run.py
@@ -18,4 +18,6 @@ Pour installer-python-3
 8) Dans le navigateur, exécuter l'url 127.0.0.1/all_carrieres
 
 
-Description des variables à entrer dans le fichier .env :
+Description des variables à entrer dans le fichier .env : 
+DEBUG=TRUE
+SQLALCHEMY_DATABASE_URI=sqlite:////home/lnabias/Documents/projet_python/noblesse.sqlite
