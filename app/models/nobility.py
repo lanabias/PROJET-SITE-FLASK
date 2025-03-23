@@ -3,8 +3,8 @@ from ..app import app,db
 class TypType6(db.Model):
     __tablename__="typtype6"
     TYP_id_6=db.Column(db.Integer, primary_key=True)
-    TYP_groupe=db.Column(db.Text)
-    TYP_sous_groupe=db.Column(db.Text)
+    TYP_groupes=db.Column(db.Text)
+    TYP_sous_groupes=db.Column(db.Text)
     TYP_lib=db.Column(db.Text)
     TYP_fiab=db.Column(db.Integer)
    
