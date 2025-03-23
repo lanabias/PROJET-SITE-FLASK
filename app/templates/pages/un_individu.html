@@ -1,0 +1,39 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Bienvenue sur le site de la prosopographie nobiliaire de l'Île-de-France</h1>
+
+</div>
+
+<div class="row">
+    <h1>Ensemble des données sur un individu {{sous_titre}}</h1>
+    <br>
+</div>
+<div id="accordion">
+    <!--généralités-->
+    <div class="card">
+        <div class="card-header" id="headinggeneralites">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsegeneralites"
+                    aria-expanded="false" aria-controls="collapsegeneralites">
+                    Généralités
+                </button>
+            </h5>
+        </div>
+        
+        <!--<div id="collapsegeneralites" class="collapse " aria-labelledby="headinggeneralites"
+            data-parent="#accordion">-->
+        <div>
+            <div class="card-body">
+                {%for individu in donnees%}
+                    <p><b>Identifiant individu</b> : {{individu.IND_id}}</p>
+                    <p><b>Nom de baptême</b> : {{individu.IND_prenom}}</p>
+                    <p><b>Nom de lignage</b> : {{individu.IND_lignage}}</p>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
