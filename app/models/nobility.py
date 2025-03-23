@@ -77,23 +77,26 @@ class IndIndividus(db.Model):
     #   Relations avec d'autres individus (les patrons des institutions où se déroule la carrière) via la table carriere
     relation_carriere_sortante = db.relationship(
         "CrrCarriere",
-        foreign_keys='crrcarriere.IND_id_1',
-        primaryjoin="indindividus.IND_id == crrcarriere.IND_id_1",
+        foreign_keys='CrrCarriere.IND_id_1',
+        primaryjoin="IndIndividus.IND_id == CrrCarriere.IND_id_1",
         backref="ind_individus_sortante",
         lazy="dynamic"
     )   
 
     relation_carriere_entrante = db.relationship(
         "CrrCarriere",
-        foreign_keys='crrcarriere.IND_id_2',
-        primaryjoin="indindividus.IND_id == crrcarriere.IND_id_2",
+        foreign_keys='CrrCarriere.IND_id_2',
+        primaryjoin="IndIndividus.IND_id == CrrCarriere.IND_id_2",
         backref="ind_individus_entrante",
         lazy="dynamic"
     )
 
+    #def __repr__(self):
+    #    return '<CrrCarriere %r>' % (self.name) 
+
     # Contrainte pour éviter l'auto-référence
     __table_args__ = (
-        db.CheckConstraint('crrcarriere.IND_id_1 != crrcarriere.IND_id_2', name='check_diff_individus'),
+        db.CheckConstraint('crrCarriere.IND_id_1 != CrrCarriere.IND_id_2', name='check_diff_individus'),
     )
 
 
