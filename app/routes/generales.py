@@ -31,7 +31,7 @@ def all_carrieres():
                 "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
                 "Element_de_carriere": carriere.CRR_desc,
                 "Référence_carriere": reference.REF_desc,
-                "Type_carriere_groupe":f"{type_relation.TYP_groupes} {type_relation.TYP_sous_groupes}",
+                "Type_carriere_groupe":f"{type_relation.TYP_groupes} e{type_relation.TYP_sous_groupes}",
                 "Type_carriere_libelle":type_relation.TYP_lib
               })
 
