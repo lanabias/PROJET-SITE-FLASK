@@ -77,32 +77,34 @@ def recherche():
     # initialisation des données de retour dans le cas où il n'y ait pas de requête
     donnees = []
     if form.validate_on_submit():
+      
         # si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
         # dans les données
         
-        if nom_individu  and nom_bapteme:
-            # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
-            # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
-            query_results = IndIndividus.query
+      if nom_individu and nom_bapteme:
+        #return f"Les deux variables sont présentes : nom_individu = {nom_individu}, nom_bapteme = {nom_bapteme}"
+        # initialisation de la recherche; en fonction de la présence ou nom d'un filtre côté utilisateur, nous effectuerons des filtres SQLAlchemy,
+        # ce qui signifie que nous pouvons jouer ici plusieurs filtres d'affilée
+        query_results = IndIndividus.query
+        query_results = query_results.filter(and_(\
+          IndIndividus.IND_lignage.ilike("%"+nom_individu.lower()+"%"),\
+          IndIndividus.IND_prenom.ilike("%"+nom_bapteme.lower()+"%")\
+          ))            
+        donnees = query_results.order_by(IndIndividus.IND_lignage)
 
-            query_results = query_results.filter(and_(\
-               IndIndividus.IND_lignage.ilike("%"+nom_individu.lower()+"%"),\
-               IndIndividus.IND_prenom.ilike("%"+nom_bapteme.lower()+"%")\
-                ))
-                       
-            donnees = query_results.order_by(IndIndividus.IND_lignage)
-        
-        if not(nom_individu):
-           print('Il manque un champ')
-
-        if not(nom_bapteme):
-          print ('Il manque un nom de baptême')
-        
         # renvoi des filtres de recherche pour préremplissage du formulaire
         form.nom_individu.data = nom_individu
         form.nom_bapteme.data = nom_bapteme
-
-    return render_template("pages/resultats_recherche_individu.html", 
-            sous_titre= "Recherche" , 
-            donnees=donnees,
-            form=form)
+        return render_template("pages/resultats_recherche_individu.html",sous_titre= "Recherche",donnees=donnees,form=form)
+        
+      elif nom_individu:
+        return "Seul 'nom_individu' est présent."  
+      
+      elif nom_bapteme:
+        return "Seul 'nom_bapteme' est présent."
+      
+      else:
+        return "Aucune des variables n'est présente."
+        
+ # Ajoutez ce retour par défaut
+    return render_template("pages/resultats_recherche_individu.html",sous_titre= "Recherche",donnees=donnees,form=form)

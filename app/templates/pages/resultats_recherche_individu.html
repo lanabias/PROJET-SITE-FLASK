@@ -1,9 +1,11 @@
-% extends "partials/conteneur.html" %}
+{% extends "partials/conteneur.html" %}
 
 {% block body %}
 
 <div class="container">
+   
     <!-- affichage en cas d'absence de résultats (lors du premier chargement de la page, ou d'absence de résultats suite à la recherche)-->
+  
     {% if not donnees %}
     <div class="row">
         <div class="col-sm-4"></div>
@@ -44,6 +46,7 @@
 
     <!-- affichage des résultats-->
     <h1>Résultats de la recherche </h1>
+            <p>la recherche arrive</p>
 
     {%endif%}
 </div>
