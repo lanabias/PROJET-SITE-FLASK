@@ -1,8 +1,12 @@
 from ..app import app, db
-from flask import render_template,request
+from flask import render_template,request,redirect, url_for
 from sqlalchemy import text,or_,and_
 from ..models.nobility import CrrCarriere,IndIndividus,TypType6,RefDocuments
 from ..models.formulaire import Recherche
+
+@app.route("/")
+def accueil():
+    return redirect(url_for("all_individus"))
 
 
 @app.route("/all_individus")

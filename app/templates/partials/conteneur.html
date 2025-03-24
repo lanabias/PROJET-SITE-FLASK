@@ -8,17 +8,92 @@
     {% include "partials/js.html" %}
     {% block js %}{%endblock%}
     {% block css %}{%endblock%}
+
+    <style>    
+        /*the container must be positioned relative:*/
+        .autocomplete {
+          position: relative;
+          display: inline-block;
+        }
+        
+        input {
+          border: 1px solid transparent;
+          background-color: #f1f1f1;
+          padding: 10px;
+          font-size: 16px;
+        }
+        
+        input[type=text] {
+          background-color: #f1f1f1;
+          width: 100%;
+        }
+        
+        input[type=submit] {
+          background-color: DodgerBlue;
+          color: #fff;
+          cursor: pointer;
+        }
+        
+        .autocomplete-items {
+          position: absolute;
+          border: 1px solid #d4d4d4;
+          border-bottom: none;
+          border-top: none;
+          z-index: 99;
+          /*position the autocomplete items to be the same width as the container:*/
+          top: 100%;
+          left: 0;
+          right: 0;
+        }
+        
+        .autocomplete-items div {
+          padding: 10px;
+          cursor: pointer;
+          background-color: #fff; 
+          border-bottom: 1px solid #d4d4d4; 
+        }
+        
+        /*when hovering an item:*/
+        .autocomplete-items div:hover {
+          background-color: #e9e9e9; 
+        }
+        
+        /*when navigating through the items using the arrow keys:*/
+        .autocomplete-active {
+          background-color: DodgerBlue !important; 
+          color: #ffffff; 
+        }
+        </style>
+  
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg  fixed-top navbar-light" style="background-color: #e3f2fd;">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-           <div align="right">
-                
-            </div>
-        </div>
-
-    </nav>
+    <body>
+        <!--<div class="bg-image" style="
+          background-image: url('https://www.cia.gov/the-world-factbook/static/778a257ec6e116fbb7aac018c170b3eb/47498/wfb-feature-world.jpg');
+          height: 450px; width:100%;overflow:hidden;margin-top: -200px;"></div>-->
+      
+        <nav class="navbar navbar-expand-lg  fixed-top navbar-light" style="background-color: #e3f2fd;"">
+          <a class=" navbar-brand" href="{{ url_for('all_individus') }}">PROSOPOGRAPHIE DES NOBLES D'Île-de-France 1180-1436</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('all_carrieres') }}">Liste de carrieres</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('all_individus') }}">Liste de nobles/a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('recherche') }}">Recherche</a>
+              </li>     
+            </ul>
+          </div>    
+        </nav>
 
 
     {% block body%}{%endblock%}
