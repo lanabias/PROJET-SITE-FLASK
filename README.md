@@ -15,7 +15,7 @@ Pour installer-python-3
 6) Activer l'environnement virtuel en exécutant source env/bin/activate
 7) Charger tous les modules compris dans le fichier requirements.txT en exécutant pip install -r requirements.txt
 7) Lancer python3 run.py
-8) Dans le navigateur, exécuter l'url 127.0.0.1/all_carrieres
+8) Dans le navigateur, exécuter l'url 127.0.0.1
 
 
 Description des variables à entrer dans le fichier .env : 
