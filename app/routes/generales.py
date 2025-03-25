@@ -20,16 +20,60 @@ def all_individus():
     #Construction de la liste des individus de la base de données avec leurs attributs
       donnees.append({
         "identifindividu":individu_1.IND_id,
-        "nomIndividu": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu"
+        "nomindividu": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu"
       })
   return render_template("pages/individus.html", donnees=donnees, sous_titre="Tous les individus")
 
 
 @app.route("/individus/<int:id_individu>")
 def un_individu(id_individu):
-  results=IndIndividus.query.filter(IndIndividus.IND_id == id_individu)
+  '''individu_1=IndIndividus.query.filter(IndIndividus.IND_id == id_individu)'''
+  #Récupération de l'enregistrement des données sur l'identité de l'individu identifié par son identité
+  individu_1 = IndIndividus.query.get(id_individu)
+  
+  carrieres_sortantes=[]
+  relations_carrieres_sortantes=individu_1.relation_carriere_sortante.all()
 
-  return render_template("pages/un_individu.html",donnees=results,sous_titre=id_individu)
+  print(type(relations_carrieres_sortantes)) 
+
+  for carriere in relations_carrieres_sortantes:
+    print(type(carriere))  # Vérifiez si c'est un objet ou un dictionnaire
+    #Récupération de l'enregistrement du chef de faction qui est à l'autre bout de la relation de carrière avec individu_1
+    individu_2 = IndIndividus.query.get(carriere.IND_id_2)
+
+    #Récupération de l'enregistrement du type de relation de carrière
+    type_relation = TypType6.query.get(carriere.TYP_type_6)
+
+    #Récupération de la référence de la relation
+    reference=RefDocuments.query.get(carriere.REF_id)
+    
+    # Construction des données
+    if reference is not None:
+      carrieres_sortantes.append({
+        "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
+        "Element_de_carriere": carriere.CRR_desc,
+        "Référence_carriere": reference.REF_desc,
+        "Type_carriere_groupe":f"{type_relation.TYP_groupes} e{type_relation.TYP_sous_groupes}",
+        "Type_carriere_libelle":type_relation.TYP_lib,    
+        "Date_debut": carriere.CRR_dat_deb,
+        "Date_fin": carriere.CRR_dat_fin,
+        "Description": carriere.CRR_lib
+      })
+    else:
+      # Gérer le cas où la référence est manquante
+      carrieres_sortantes.append({
+        "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
+        "Date_debut": carriere.CRR_dat_deb,
+        "Date_fin": carriere.CRR_dat_fin,
+        "Element_de_carriere": carriere.CRR_desc,
+        "Référence_carriere": "Référence manquante",
+        "Type_carriere_groupe":f"{type_relation.TYP_groupes} {type_relation.TYP_sous_groupes}",
+        "Type_carriere_libelle":type_relation.TYP_lib,    
+        "Description": carriere.CRR_lib
+      })
+    carrieres_sortantes_triees = sorted(carrieres_sortantes, key=lambda x: x['Date_debut'])
+   
+  return render_template("pages/un_individu.html",donnee=individu_1,carrieres=carrieres_sortantes_triees,sous_titre=id_individu)
 
 
 
@@ -54,6 +98,8 @@ def all_carrieres():
       donnees.append({
         "nomIndividu_1": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu",
         "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
+        "Date_debut": carriere.CRR_dat_deb,
+        "Date_fin": carriere.CRR_dat_fin,
         "Element_de_carriere": carriere.CRR_desc,
         "Référence_carriere": reference.REF_desc,
         "Type_carriere_groupe":f"{type_relation.TYP_groupes} e{type_relation.TYP_sous_groupes}",
@@ -64,13 +110,16 @@ def all_carrieres():
       donnees.append({
         "nomIndividu_1": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu",
         "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
+        "Date_debut": carriere.CRR_dat_deb,
+        "Date_fin": carriere.CRR_dat_fin,
         "Element_de_carriere": carriere.CRR_desc,
         "Référence_carriere": "Référence manquante",
         "Type_carriere_groupe":f"{type_relation.TYP_groupes} {type_relation.TYP_sous_groupes}",
         "Type_carriere_libelle":type_relation.TYP_lib
-      })
-   
-  return render_template("pages/toutes_carrieres.html", donnees=donnees, sous_titre="Toutes les carrieres")
+      }) 
+  donnees_triees = sorted(donnees, key=lambda x: x['Type_carriere_libelle'])
+
+  return render_template("pages/toutes_carrieres.html", donnees=donnees_triees, sous_titre="Toutes les carrieres")
 
 @app.route("/recherche", methods=['GET', 'POST'])
 def recherche():

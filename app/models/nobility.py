@@ -63,7 +63,7 @@ class IndIndividus(db.Model):
     IND_dat_deces=db.Column(db.Text)
     IND_dat_deces_approx_1=db.Column(db.Text)
     IND_dat_deces_approx_2=db.Column(db.Text)
-    IND_dat_decs_desc=db.Column(db.Text)
+    IND_dat_deces=db.Column(db.Text)
     IND_dat_deb_apparition=db.Column(db.Text)
     IND_dat_fin_apparition=db.Column(db.Text)
     IND_inhumation=db.Column(db.Text)
@@ -79,7 +79,7 @@ class IndIndividus(db.Model):
         "CrrCarriere",
         foreign_keys='CrrCarriere.IND_id_1',
         primaryjoin="IndIndividus.IND_id == CrrCarriere.IND_id_1",
-        backref="ind_individus_sortante",
+        backref="relation_carriere_sortante",
         lazy="dynamic"
     )   
 
@@ -87,7 +87,7 @@ class IndIndividus(db.Model):
         "CrrCarriere",
         foreign_keys='CrrCarriere.IND_id_2',
         primaryjoin="IndIndividus.IND_id == CrrCarriere.IND_id_2",
-        backref="ind_individus_entrante",
+        backref="relation_carriere_entrante",
         lazy="dynamic"
     )
 

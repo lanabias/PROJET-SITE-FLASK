@@ -27,12 +27,68 @@
             data-parent="#accordion">-->
         <div>
             <div class="card-body">
-                {%for individu in donnees%}
-                    <p><b>Identifiant individu</b> : {{individu.IND_id}}</p>
-                    <p><b>Nom de baptême</b> : {{individu.IND_prenom}}</p>
-                    <p><b>Nom de lignage</b> : {{individu.IND_lignage}}</p>
+                
+                    <p><b>Identifiant individu</b> : {{donnee.IND_id}}  {{donnee.IND_sexe}}</p>
+                    <p><b>Nom de baptême</b> : {{donnee.IND_prenom}} {{donnee.NUM_lignage}}</p>
+                    <p><b>Nom de lignage</b> : {{donnee.IND_lignage}} </p> 
+                    <p>NAISSANCE</p>
+                    <p><b>dATE DE NAISSANCE CERTAINE</b> : {{donnee.IND_dat_naissance}} </p> 
+                    <p><b>iNTERVALLE DE DATE :</b></p>
+                    <p>Entre {{donnee.IND_dat_naiss_approx_1}} et {{donnee.IND_dat_naiss_approx_2}} </p> 
+                    <p><b>Dates d'apparition dans les textes :</b></p>
+                    <p>Entre {{donnee.IND_dat_deb_apparition}} et {{donnee.IND_dat_fin_apparition}} </p> 
+                   
+                    <p>LIEU DE NAISSANCE</p>
+                    <p>{{donnee.IND_naiss_lieu}}</p>
+
+                    <p>MARIAGE (O:N)</p>
+                    {{donnee.IND_mariage}}
+
+                    <p>DECES</p>
+                    <p><b>dATE DE DECES CERTAINE</b> : {{donnee.IND_dat_deces}} </p> 
+                    <p><b>iNTERVALLE DE DATE :</b></p>
+                    <p>Entre {{donnee.IND_dat_deces_approx_1}} et {{donnee.IND_dat_deces_approx_2}} </p> 
+                    <p><b>Dates d'apparition dans les textes :</b></p>
+                    <p>Entre {{donnee.IND_dat_deb_apparition}} et {{donnee.IND_dat_fin_apparition}} </p> 
+                    
+                    <p>LIEU DE DECES</p>
+                    <p>{{donnee.IND_naiss_lieu}}</p>
+
+                    <p>DOCUMENTATION-BIBLIOGRAPHIE</p>
+                    <p>{{donnee.IND_deces}}</p>
+
                     <p>Ensemble de la carrière</p>
-                {%endfor%}
+                    
+                    {%if carrieres%}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Chef de faction</th>
+                                <th scope="col">Date de début de carrière</th>
+                                <th scope="col">Date de fin de carrière</th>
+                                <th scope="col">Libellé de l'élément de carrière</th>
+                                <th scope="col">Catégorie</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Référence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for carriere in carrieres%}
+                            <tr>
+                                <th scope="row">{{loop.index}}</th>
+                                <td>{{carriere.nomIndividu_2}}</td>
+                                <td>{{carriere.Date_debut}}</td>
+                                <td>{{carriere.Date_fin}}</td>
+                                <td>{{carriere.Type_carriere_libelle}}</td>
+                                <td>{{carriere.Type_carriere_groupe}}</td>
+                                <td>{{carriere.Element_de_carriere}}</td>
+                                <td>{{carriere.Référence_carriere}}</td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                    {%endif%}
             </div>
         </div>
     </div>

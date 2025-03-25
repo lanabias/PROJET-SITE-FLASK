@@ -15,14 +15,13 @@
                     <th scope="col">?</th>
                     <th scope="col">?</th>
                     <th scope="col"></th>
-                    <th scope="col">Libellé de carrière</th>
                 </tr>
             </thead>
             <tbody>
                 {%for individu in donnees%}
                 <tr>
                     <th scope="row">{{loop.index}}</th>
-                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.nomIndividu}}</a></td>
+                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.nomindividu}}</a></td>
                 </tr>
                 {%endfor%}
             </tbody>
