@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nom de baptême et Lignage de l'individu/th>
+                    <th scope="col">Nom de baptême et Lignage de l'individu</th>
                     <th scope="col">?</th>
                     <th scope="col">?</th>
                     <th scope="col">?</th>
@@ -22,7 +22,7 @@
                 {%for individu in donnees%}
                 <tr>
                     <th scope="row">{{loop.index}}</th>
-                    <td>{{individu.nomIndividu}}</td>
+                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.nomIndividu}}</a></td>
                 </tr>
                 {%endfor%}
             </tbody>

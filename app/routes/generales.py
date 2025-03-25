@@ -19,15 +19,17 @@ def all_individus():
       individu_1=IndIndividus.query.get(individu.IND_id)  
     #Construction de la liste des individus de la base de données avec leurs attributs
       donnees.append({
-        "nomIndividu": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu",
+        "identifindividu":individu_1.IND_id,
+        "nomIndividu": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu"
       })
   return render_template("pages/individus.html", donnees=donnees, sous_titre="Tous les individus")
 
 
-@app.route("/individus/<string:nom_individu>")
-def un_individu(nom_individu):
-  results=IndIndividus.query.filter(IndIndividus.IND_lignage == nom_individu)
-  return render_template("pages/un_individu.html",donnees=results,sous_titre=nom_individu)
+@app.route("/individus/<int:id_individu>")
+def un_individu(id_individu):
+  results=IndIndividus.query.filter(IndIndividus.IND_id == id_individu)
+
+  return render_template("pages/un_individu.html",donnees=results,sous_titre=id_individu)
 
 
 
