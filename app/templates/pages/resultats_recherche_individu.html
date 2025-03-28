@@ -6,7 +6,7 @@
    
     <!-- affichage en cas d'absence de résultats (lors du premier chargement de la page, ou d'absence de résultats suite à la recherche)-->
   
-    {% if not donnees %}
+{% if not donnees %}
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
@@ -24,7 +24,7 @@
         <div class="col-sm-4"></div>
     </div>
 
-    {%else%}
+{%else%}
 
     <!--affichage caché du formulaire-->
         <div class="row">
@@ -47,8 +47,35 @@
     <!-- affichage des résultats-->
     <h1>Résultats de la recherche </h1>
             <p>la recherche arrive</p>
+            <div class="container">
+                <h1>Bienvenue sur le site de la prosopographie nobiliaire en Île-de-France</h1>
+        
+                    {%if donnees%}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nom de baptême</th>
+                                    <th scope="col">Nom de lignage de l'individu</th>
+                                    <th scope="col">Numéro</th>
 
-    {%endif%}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for individu in donnees%}
+                                <tr>
+                                    <td scope="row">{{loop.index}}</td>
+                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.IND_id}}</a></td>
+                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.IND_prenom}}</a></td>
+                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.IND_lignage}}</a></td>
+                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.NUM_lignage}}</a></td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    {%endif%}
+            </div>
+{%endif%}
 </div>
 
 {% endblock %}

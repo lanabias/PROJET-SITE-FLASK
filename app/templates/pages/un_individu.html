@@ -57,37 +57,36 @@
                     <p>DOCUMENTATION-BIBLIOGRAPHIE</p>
                     <p>{{donnee.IND_deces}}</p>
 
-                    <p>Ensemble de la carrière</p>
-                    
                     {%if carrieres%}
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Chef de faction</th>
-                                <th scope="col">Date de début de carrière</th>
-                                <th scope="col">Date de fin de carrière</th>
-                                <th scope="col">Libellé de l'élément de carrière</th>
-                                <th scope="col">Catégorie</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Référence</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {%for carriere in carrieres%}
-                            <tr>
-                                <th scope="row">{{loop.index}}</th>
-                                <td>{{carriere.nomIndividu_2}}</td>
-                                <td>{{carriere.Date_debut}}</td>
-                                <td>{{carriere.Date_fin}}</td>
-                                <td>{{carriere.Type_carriere_libelle}}</td>
-                                <td>{{carriere.Type_carriere_groupe}}</td>
-                                <td>{{carriere.Element_de_carriere}}</td>
-                                <td>{{carriere.Référence_carriere}}</td>
-                            </tr>
-                            {%endfor%}
-                        </tbody>
-                    </table>
+                        <p>Ensemble de la carrière</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Chef de faction</th>
+                                    <th scope="col">Date de début de carrière</th>
+                                    <th scope="col">Date de fin de carrière</th>
+                                    <th scope="col">Libellé de l'élément de carrière</th>
+                                    <th scope="col">Catégorie</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Référence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for carriere in carrieres%}
+                                <tr>
+                                    <th scope="row">{{loop.index}}</th>
+                                    <td>{{carriere.nomIndividu_2}}</td>
+                                    <td>{{carriere.Date_debut}}</td>
+                                    <td>{{carriere.Date_fin}}</td>
+                                    <td>{{carriere.Type_carriere_libelle}}</td>
+                                    <td>{{carriere.Type_carriere_groupe}}</td>
+                                    <td>{{carriere.Element_de_carriere}}</td>
+                                    <td>{{carriere.Référence_carriere}}</td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
                     {%endif%}
             </div>
         </div>
