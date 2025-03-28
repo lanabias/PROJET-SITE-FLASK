@@ -15,6 +15,6 @@ def to_bool(s):
 class Config():
     DEBUG = to_bool(os.environ.get("DEBUG"))
     SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
-    IND_PER_PAGE=os.environ.get("IND_PER_PAGE")
     SECRET_KEY = os.environ.get("SECRET_KEY")
     WTF_CSRF_ENABLE = os.environ.get("WTF_CSRF_ENABLE")
+    PER_PAGE = int(os.environ.get("PER_PAGE"))

@@ -27,6 +27,23 @@
             </tbody>
         </table>
         {%endif%}
+
+        {% if pagination.pages > 1 %}
+        <nav aria-label="Navigation des pages">
+          <ul class="pagination">
+            {% for page in pagination.iter_pages() %}
+              {% if page %}
+                <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                  <a class="page-link" href="{{ url_for('all_individus', page=page) }}">{{ page }}</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
+      
     </div>
 
 {% endblock %}

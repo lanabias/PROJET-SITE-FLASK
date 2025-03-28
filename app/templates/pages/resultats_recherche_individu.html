@@ -27,29 +27,26 @@
 {%else%}
 
     <!--affichage caché du formulaire-->
-        <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
 
-                <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                    aria-controls="collapseExample">
-                    Afficher la recherche <i class="fa-solid fa-caret-down"></i>
-            </h3>
-                <div class="collapse " id="collapseExample">
-                    <div class="card card-body">
-                        {% include "partials/formulaires/recherche.html" %}
-                    </div>
+            <h3 data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample">
+                Effectuer une recherche <i class="fa-solid fa-caret-down"></i>
+        </h3>
+            <div class="collapse show" id="collapseExample">
+                <div class="card card-body">
+                    {% include "partials/formulaires/recherche.html" %}
                 </div>
             </div>
-            <div class="col-sm-4"></div>
         </div>
+        <div class="col-sm-4"></div>
+    </div>
 
     <!-- affichage des résultats-->
     <h1>Résultats de la recherche </h1>
-            <p>la recherche arrive</p>
             <div class="container">
-                <h1>Bienvenue sur le site de la prosopographie nobiliaire en Île-de-France</h1>
-        
                     {%if donnees%}
                         <table class="table">
                             <thead>
@@ -57,7 +54,9 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Nom de baptême</th>
                                     <th scope="col">Nom de lignage de l'individu</th>
-                                    <th scope="col">Numéro</th>
+                                    <th scope="col">Numéro dans le lignage</th>
+                                    <th scope="col">Début d'apparition dans les textes</th>
+                                    <th scope="col">FIn d'apparition dans les textes</th>
 
                                 </tr>
                             </thead>
@@ -65,10 +64,23 @@
                                 {%for individu in donnees%}
                                 <tr>
                                     <td scope="row">{{loop.index}}</td>
-                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.IND_id}}</a></td>
-                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.IND_prenom}}</a></td>
-                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.IND_lignage}}</a></td>
-                                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.NUM_lignage}}</a></td>
+                                    <td><a href="{{url_for('un_individu',id_individu=individu.IND_id)}}">{{individu.IND_prenom}}</a></td>
+                                    <td><a href="{{url_for('un_individu',id_individu=individu.IND_id)}}">{{individu.IND_lignage}}</a></td>
+                                    {% if individu.NUM_lignage and individu.NUM_lignage != "NULL" %}
+                                        <td><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.NUM_lignage }}</a></td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                    {% if individu.NUM_lignage and individu.IND_dat_deb_apparition != "NULL" %}
+                                        <td><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.IND_dat_deb_apparition}}</a></td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                    {% if individu.NUM_lignage and individu.IND_dat_fin_apparition != "NULL" %}
+                                        <td><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.IND_dat_fin_apparition}}</a></td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
                                 </tr>
                                 {%endfor%}
                             </tbody>

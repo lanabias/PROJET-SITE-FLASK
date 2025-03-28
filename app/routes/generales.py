@@ -8,21 +8,21 @@ from ..models.formulaire import Recherche
 def accueil():
     return redirect(url_for("all_individus"))
 
-
 @app.route("/all_individus")
+@app.route("/all_individus/")
 def all_individus():
-  results=IndIndividus.query.all()
+    page = request.args.get('page',1, type=int)
+    pagination = IndIndividus.query.order_by(IndIndividus.IND_lignage).paginate(page=page,per_page=app.config["PER_PAGE"],error_out=False)
+    print('per_page')
+    
+    donnees = []
+    for item in pagination.items:
+        donnees.append({
+            "identifindividu": item.IND_id,
+            "nomindividu": f"{item.IND_prenom} {item.IND_lignage}" if item else "Inconnu"
+        })
 
-  donnees=[]
-  for individu in results:
-    #Récupération des individus de la liste
-      individu_1=IndIndividus.query.get(individu.IND_id)  
-    #Construction de la liste des individus de la base de données avec leurs attributs
-      donnees.append({
-        "identifindividu":individu_1.IND_id,
-        "nomindividu": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu"
-      })
-  return render_template("pages/individus.html", donnees=donnees, sous_titre="Tous les individus")
+    return render_template("pages/individus.html", donnees=donnees, pagination=pagination, sous_titre="Tous les individus")
 
 
 @app.route("/individus/<int:id_individu>")
@@ -126,31 +126,29 @@ def all_carrieres():
 def recherche():
   form = Recherche() 
 
-    # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
-  nom_individu =  (request.form.get("nom_individu", None))
-  nom_bapteme =   (request.form.get("nom_bapteme", None))
-      
     # initialisation des données de retour dans le cas où il n'y ait pas de requête
   donnees = []
   try:
     if form.validate_on_submit():
-          nom_individu = form.nom_individu.data
-          nom_bapteme = form.nom_bapteme.data
-          
-          # Si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
-          # dans les données
-          
-          if nom_individu or nom_bapteme:
-              # Initialisation de la recherche
-              query_results = IndIndividus.query
+      # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
+      nom_individu = request.form.get("nom_individu", None)
+      nom_bapteme = request.form.get("nom_bapteme", None)
+      print(nom_individu, nom_bapteme,flush=True)
 
-              # Application des filtres en fonction des champs remplis
-              if nom_individu:
-                  query_results = query_results.filter(IndIndividus.IND_lignage.ilike(f"%{nom_individu.lower()}%"))
-              if nom_bapteme:
-                  query_results = query_results.filter(IndIndividus.IND_prenom.ilike(f"%{nom_bapteme.lower()}%"))
+        # Si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
+        # dans les données
+          
+      if nom_individu or nom_bapteme:
+          # Initialisation de la recherche
+          query_results = IndIndividus.query
+
+          # Application des filtres en fonction des champs remplis
+          if nom_individu:
+            query_results = query_results.filter(IndIndividus.IND_lignage.ilike(f"%{nom_individu.lower()}%"))
+            if nom_bapteme:
+              query_results = query_results.filter(IndIndividus.IND_prenom.ilike(f"%{nom_bapteme.lower()}%"))
               
-              donnees = query_results.order_by(IndIndividus.IND_lignage).all()
+              donnees = query_results.order_by(IndIndividus.IND_dat_deb_apparition).all()
               print(f"Résultats de la recherche : {donnees}")  # Pour le débogage
 
               # Renvoi des filtres de recherche pour préremplissage du formulaire
@@ -160,11 +158,11 @@ def recherche():
               flash("La recherche a été effectuée avec succès", "info")
               return render_template("pages/resultats_recherche_individu.html", sous_titre="Recherche", donnees=donnees, form=form)
           
-          else:
-              flash("Veuillez remplir au moins un champ de recherche", "warning")
+    else:
+      flash("Veuillez remplir au moins un champ de recherche", "warning")
 
     # Si le formulaire n'a pas été soumis ou n'est pas valide, on affiche simplement le formulaire
-    return render_template("pages/resultats_recherche_individu.html", sous_titre="Recherche", form=form)
+    #return render_template("pages/resultats_recherche_individu.html", sous_titre="Recherche", form=form)
 
   except Exception as e:
     print(f"Erreur détaillée : {str(e)}")  # Pour le débogage
