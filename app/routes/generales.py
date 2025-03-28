@@ -1,3 +1,4 @@
+import requests
 from ..app import app, db
 from flask import render_template,request,flash,redirect, url_for
 from sqlalchemy import text,or_,and_
@@ -13,15 +14,16 @@ def accueil():
 def all_individus():
     page = request.args.get('page',1, type=int)
     pagination = IndIndividus.query.order_by(IndIndividus.IND_lignage).paginate(page=page,per_page=app.config["PER_PAGE"],error_out=False)
-    print('per_page')
-    
+        
     donnees = []
     for item in pagination.items:
         donnees.append({
             "identifindividu": item.IND_id,
-            "nomindividu": f"{item.IND_prenom} {item.IND_lignage}" if item else "Inconnu"
+            "nomindividu": f"{item.IND_prenom} {item.IND_lignage}" if item else "Inconnu",
+            "numindividu": item.NUM_lignage,
+            "debappindividu": item.IND_dat_deb_apparition,
+            "finappindividu":item.IND_dat_fin_apparition
         })
-
     return render_template("pages/individus.html", donnees=donnees, pagination=pagination, sous_titre="Tous les individus")
 
 
@@ -30,6 +32,14 @@ def un_individu(id_individu):
   '''individu_1=IndIndividus.query.filter(IndIndividus.IND_id == id_individu)'''
   #Récupération de l'enregistrement des données sur l'identité de l'individu identifié par son identité
   individu_1 = IndIndividus.query.get(id_individu)
+  
+  # Rechercher un lien Wikipédia
+  nom_complet=f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu"
+  
+  wikidata_result = search_wikidata(nom_complet)
+  if not wikidata_result:
+    wikidata_search_url = f"https://www.wikidata.org/w/index.php?search={nom_complet.replace(' ', '+')}"
+    wikidata_result = {"url": wikidata_search_url}
   
   carrieres_sortantes=[]
   
@@ -72,55 +82,60 @@ def un_individu(id_individu):
           "Description": carriere.CRR_lib
         })
     carrieres_sortantes_triees = sorted(carrieres_sortantes, key=lambda x: x['Date_debut'])
-    return render_template("pages/un_individu.html",donnee=individu_1,carrieres=carrieres_sortantes_triees,sous_titre=id_individu)
+    return render_template("pages/un_individu.html",donnee=individu_1,carrieres=carrieres_sortantes_triees,wikidata_result=wikidata_result,sous_titre=id_individu)
   else:
     return render_template("pages/un_individu.html",donnee=individu_1,sous_titre=id_individu)
 
 
 
 @app.route("/all_carrieres")
+@app.route("/all_carrieres/")
 def all_carrieres():
-  results = CrrCarriere.query.all()
+  page = request.args.get('page',1, type=int)
+  pagination = CrrCarriere.query.paginate(page=page,per_page=app.config["PER_PAGE"],error_out=False)
+  
 
   donnees = []  
-  for carriere in results:
+  for item in pagination.items:
     #Récupération des individus associés dans une relation de carrière
-    individu_1 = IndIndividus.query.get(carriere.IND_id_1)
-    individu_2 = IndIndividus.query.get(carriere.IND_id_2)
+    individu_1 = IndIndividus.query.get(item.IND_id_1)
+    individu_2 = IndIndividus.query.get(item.IND_id_2)
 
     #Récupération de la référence de la relation
-    reference=RefDocuments.query.get(carriere.REF_id)
+    reference=RefDocuments.query.get(item.REF_id)
 
     #Récupération du type de relation
-    type_relation=TypType6.query.get(carriere.TYP_type_6)
+    type_relation=TypType6.query.get(item.TYP_type_6)
 
     # Construction des données
     if reference is not None:
       donnees.append({
+        "idIndividu":individu_1.IND_id,
         "nomIndividu_1": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu",
         "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
-        "Date_debut": carriere.CRR_dat_deb,
-        "Date_fin": carriere.CRR_dat_fin,
-        "Element_de_carriere": carriere.CRR_desc,
+        "Date_debut": item.CRR_dat_deb,
+        "Date_fin": item.CRR_dat_fin,
+        "Element_de_carriere": item.CRR_desc,
         "Référence_carriere": reference.REF_desc,
-        "Type_carriere_groupe":f"{type_relation.TYP_groupes} e{type_relation.TYP_sous_groupes}",
+        "Type_carriere_groupe":f"{type_relation.TYP_groupes} {type_relation.TYP_sous_groupes}",
         "Type_carriere_libelle":type_relation.TYP_lib
       })
     else:
       # Gérer le cas où la référence est manquante
       donnees.append({
+        "idIndividu":individu_1.IND_id,
         "nomIndividu_1": f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu",
         "nomIndividu_2": f"{individu_2.IND_prenom} {individu_2.IND_lignage}" if individu_2 else "Inconnu",
-        "Date_debut": carriere.CRR_dat_deb,
-        "Date_fin": carriere.CRR_dat_fin,
-        "Element_de_carriere": carriere.CRR_desc,
+        "Date_debut": item.CRR_dat_deb,
+        "Date_fin": item.CRR_dat_fin,
+        "Element_de_carriere": item.CRR_desc,
         "Référence_carriere": "Référence manquante",
         "Type_carriere_groupe":f"{type_relation.TYP_groupes} {type_relation.TYP_sous_groupes}",
         "Type_carriere_libelle":type_relation.TYP_lib
       }) 
   donnees_triees = sorted(donnees, key=lambda x: x['Type_carriere_libelle'])
 
-  return render_template("pages/toutes_carrieres.html", donnees=donnees_triees, sous_titre="Toutes les carrieres")
+  return render_template("pages/toutes_carrieres.html", donnees=donnees_triees, pagination=pagination, sous_titre="Toutes les carrieres")
 
 @app.route("/recherche", methods=['GET', 'POST'])
 def recherche():
@@ -133,8 +148,7 @@ def recherche():
       # récupération des éventuels arguments de l'URL qui seraient le signe de l'envoi d'un formulaire
       nom_individu = request.form.get("nom_individu", None)
       nom_bapteme = request.form.get("nom_bapteme", None)
-      print(nom_individu, nom_bapteme,flush=True)
-
+      
         # Si l'un des champs de recherche a une valeur, alors cela veut dire que le formulaire a été rempli et qu'il faut lancer une recherche 
         # dans les données
           
@@ -168,3 +182,39 @@ def recherche():
     print(f"Erreur détaillée : {str(e)}")  # Pour le débogage
     flash(f"La recherche a rencontré une erreur : {str(e)}", "error")
   return render_template("pages/resultats_recherche_individu.html", sous_titre="Recherche", form=form)
+
+def search_wikidata(term, language="fr"):
+    """
+    Recherche un terme sur Wikidata et retourne le QID et l'URL du premier résultat.
+    
+    Args:
+        term (str): Terme à rechercher.
+        language (str): Langue de recherche (par défaut "fr").
+    
+    Returns:
+        dict: Dictionnaire contenant le QID et l'URL, ou None si aucun résultat.
+    """
+    base_url = "https://www.wikidata.org/w/api.php"
+    params = {
+        "action": "wbsearchentities",
+        "format": "json",
+        "search": term,
+        "language": language,
+        "limit": 1  # Limite à un seul résultat
+    }
+    
+    response = requests.get(base_url, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+        search_results = data.get("search", [])
+        print(search_results)
+        
+        if search_results:
+            # Récupérer le premier résultat
+            qid = search_results[0]["id"]
+            url = f"https://www.wikidata.org/wiki/{qid}"
+            return {"qid": qid, "url": url}
+            print(QID,url)
+    return None

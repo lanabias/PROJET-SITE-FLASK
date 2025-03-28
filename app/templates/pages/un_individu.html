@@ -11,51 +11,106 @@
     <h1>Ensemble des données sur un individu {{sous_titre}}</h1>
     <br>
 </div>
-<div id="accordion">
-    <!--généralités-->
-    <div class="card">
-        <div class="card-header" id="headinggeneralites">
-            <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsegeneralites"
-                    aria-expanded="false" aria-controls="collapsegeneralites">
-                    Généralités
-                </button>
-            </h5>
-        </div>
+<div id="accordion">  
         
-        <!--<div id="collapsegeneralites" class="collapse " aria-labelledby="headinggeneralites"
-            data-parent="#accordion">-->
         <div>
             <div class="card-body">
                 
-                    <p><b>Identifiant individu</b> : {{donnee.IND_id}}  {{donnee.IND_sexe}}</p>
-                    <p><b>Nom de baptême</b> : {{donnee.IND_prenom}} {{donnee.NUM_lignage}}</p>
+                    <p><b>Identifiant individu</b> : {{donnee.IND_id}} </p>
+
+                    {%if donnee.NUM_lignage and donnee.NUM_lignage!="NULL"%}
+                         <p><b>Nom de baptême</b> : {{donnee.IND_prenom}} {{donnee.NUM_lignage}}</p>
+                    {%else%}
+                        <p><b>Nom de baptême</b> : {{donnee.IND_prenom}}</p>
+                    {%endif%}
+
                     <p><b>Nom de lignage</b> : {{donnee.IND_lignage}} </p> 
+
+                    {%if donnee.IND_sexe=="M"%}
+                        <p>Sexe masculin</p>
+                    {%else%}
+                        <p>Sexe féminin</p>
+                    {%endif%}
+
                     <p>NAISSANCE</p>
-                    <p><b>dATE DE NAISSANCE CERTAINE</b> : {{donnee.IND_dat_naissance}} </p> 
-                    <p><b>iNTERVALLE DE DATE :</b></p>
-                    <p>Entre {{donnee.IND_dat_naiss_approx_1}} et {{donnee.IND_dat_naiss_approx_2}} </p> 
+                    {%if donnee.IND_dat_naissance and donnee.IND_dat_naissance!="NULL"%}
+                        <p><b>Date de naissance précise</b> : {{donnee.IND_dat_naissance}} </p> 
+                    {%else%}
+                        <p><b>Date de naissance précise</b> : inconnue</p> 
+                             <p><b>INTERVALLE DE DATEs ESTIMEE :</b></p>
+                                {%if donnee.IND_dat_naiss_approx_1 and donnee.IND_dat_naiss_approx_1!="NULL" and donnee.IND_dat_naiss_approx_2 and donnee.IND_dat_naiss_approx_2!="NULL"%}
+                                    <p>Entre {{donnee.IND_dat_naiss_approx_1}} et {{donnee.IND_dat_naiss_approx_2}} </p> 
+                                {%elif donnee.IND_dat_naiss_approx_1 and donnee.IND_dat_naiss_approx_1!="NULL" and donnee.IND_dat_naiss_approx_2 and donnee.IND_dat_naiss_approx_2=="NULL"%}
+                                    <p>Date de naissance à partir de {{donnee.IND_dat_naiss_approx_1}} et fin de l'intervalle inconnu</p>
+                                {%elif donnee.IND_dat_naiss_approx_1 and donnee.IND_dat_naiss_approx_1=="NULL" and donnee.IND_dat_naiss_approx_2 and donnee.IND_dat_naiss_approx_2!="NULL"%}
+                                    <p>Date de naissance avant {{donnee.IND_dat_naiss_approx_2}} et début de l'intervalle inconnu</p>
+                                {%else%}
+                                    <p>Intervalle inconnue</p>
+                                {%endif%}
+                    {%endif%}
                     <p><b>Dates d'apparition dans les textes :</b></p>
-                    <p>Entre {{donnee.IND_dat_deb_apparition}} et {{donnee.IND_dat_fin_apparition}} </p> 
+                                {%if donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition!="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition!="NULL"%}
+                                    <p>Entre ntre {{donnee.IND_dat_deb_apparition}} et {{donnee.IND_dat_fin_apparition}}</p> 
+                                {%elif donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition=="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition!="NULL"%}
+                                    <p>Date de début d'apparition des textes le {{donnee.IND_dat_deb_apparition}} et date de fin d'apparition inconnue</p>
+                                {%elif donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition!="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition=="NULL"%}
+                                    <p>date de fin d'apparition dans les textes le{{donnee.IND_dat_fin_apparition}} et début d'apparition dans les textes inconnu</p>
+                                {%else%}
+                                    <p>Dates d'apparition dans les textes inconnues</p>
+                                {%endif%}
+                  
                    
                     <p>LIEU DE NAISSANCE</p>
-                    <p>{{donnee.IND_naiss_lieu}}</p>
+                    {%if donnee.IND_naiss_lieu and donnee.IND_naiss_lieu!="NULL"%}
+                        <p>{{donnee.IND_naiss_lieu}}</p>
+                    {%else%}
+                        <p>Lieu de naissance inconnu</p>
+                    {%endif%}
 
-                    <p>MARIAGE (O:N)</p>
-                    {{donnee.IND_mariage}}
+                    <p>ETAT MARITAL</p>
+                    {%if donnee.IND_mariage=="O"%}
+                        <p>Marié</p>
+                    {%else%}
+                        <p>Célibataire ou veuf</p>
+                    {%endif%}
 
                     <p>DECES</p>
-                    <p><b>dATE DE DECES CERTAINE</b> : {{donnee.IND_dat_deces}} </p> 
-                    <p><b>iNTERVALLE DE DATE :</b></p>
-                    <p>Entre {{donnee.IND_dat_deces_approx_1}} et {{donnee.IND_dat_deces_approx_2}} </p> 
-                    <p><b>Dates d'apparition dans les textes :</b></p>
-                    <p>Entre {{donnee.IND_dat_deb_apparition}} et {{donnee.IND_dat_fin_apparition}} </p> 
-                    
+                    {%if donnee.IND_dat_deces and donnee.IND_dat_deces!="NULL"%}
+                        <p><b>Date de décès précise</b> : {{donnee.IND_dat_deces}}</p> 
+                    {%else%}
+                        <p><b>Date de décès précise</b> : inconnue</p> 
+                             <p><b>INTERVALLE DE DATEs ESTIMEE :</b></p>
+                                {%if donnee.IND_dat_deces_approx_1 and donnee.IND_dat_decesapprox_1!="NULL" and donnee.IND_dat_deces_approx_2 and donnee.IND_dat_deces_approx_2!="NULL"%}
+                                <p>Entre {{donnee.IND_dat_deces_approx_1}} et {{donnee.IND_dat_deces_approx_2}} </p>  
+                                {%elif donnee.IND_dat_deces_approx_1 and donnee.IND_dat_deces_approx_1!="NULL" and donnee.IND_dat_deces_approx_2 and donnee.IND_dat_deces_approx_2=="NULL"%}
+                                    <p>Date de décès à partir de {{donnee.IND_dat_deces_approx_1}} et fin de l'intervalle inconnu</p>
+                                {%elif donnee.IND_dat_deces_approx_1 and donnee.IND_dat_deces_approx_1=="NULL" and donnee.IND_dat_deces_approx_2 and donnee.IND_dat_deces_approx_2!="NULL"%}
+                                    <p>Date de décès avant {{donnee.IND_dat_deces_approx_2}} et début de l'intervalle inconnu</p>
+                                {%else%}
+                                    <p>Intervalle inconnue</p>
+                                {%endif%}
+                    {%endif%}
+                   
                     <p>LIEU DE DECES</p>
-                    <p>{{donnee.IND_naiss_lieu}}</p>
+                    {%if donnee.IND_deces_lieu and donnee.IND_deces_lieu!="NULL"%}
+                        <p>{{donnee.IND_deces_lieu}}</p>
+                    {%else%}
+                        <p>Lieu de décès inconnu</p>
+                    {%endif%}
 
                     <p>DOCUMENTATION-BIBLIOGRAPHIE</p>
-                    <p>{{donnee.IND_deces}}</p>
+                    {%if donnee.IND_deces and donnee.IND_deces!="NULL"%}
+                        <p>{{donnee.IND_deces}}</p>
+                    {%else%}
+                         <p>Documentation non identifiée</p>
+                    {%endif%}
+                    {% if wikidata_result %}
+                        <p>
+                            <a href="{{ wikidata_result.url }}" target="_blank">Voir cet individu sur Wikidata</a>
+                        </p>
+                    {% else %}
+                        <p>Aucun lien vers Wikidata trouvé.</p>
+                    {% endif %}
 
                     {%if carrieres%}
                         <p>Ensemble de la carrière</p>
@@ -89,7 +144,6 @@
                         </table>
                     {%endif%}
             </div>
-        </div>
     </div>
 
 {% endblock %}

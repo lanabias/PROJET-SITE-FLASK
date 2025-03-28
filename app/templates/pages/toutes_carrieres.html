@@ -6,32 +6,63 @@
         <h1>Bienvenue sur le site de la prosopographie nobiliaire en Île-de-France</h1>
 
         {%if donnees%}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Libellé de carrière</th>
-                    <th scope="col">Premier individu</th>
-                    <th scope="col">Chef de faction</th>
-                    <th scope="col">Elément de carrière</th>
-                    <th scope="col">Référence</th>
-                    <th scope="col">Catégorie de carrière</th>
-                </tr>
-            </thead>
-            <tbody>
-                {%for carriere in donnees%}
-                <tr>
-                    <th scope="row">{{loop.index}}</th>
-                    <td>{{carriere.Type_carriere_libelle}}</td>
-                    <td>{{carriere.nomIndividu_1}}</td>
-                    <td>{{carriere.nomIndividu_2}}</td>
-                    <td>{{carriere.Element_de_carriere}}</td>
-                    <td>{{carriere.Référence_carriere}}</td>
-                    <td>{{carriere.Type_carriere_groupe}}</td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
+
+            {% if pagination.pages > 1 %}
+                <nav aria-label="Navigation des pages">
+                    <ul class="pagination">
+                        {% for page in pagination.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('all_carrieres', page=page) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Libellé de carrière</th>
+                        <th scope="col">Premier individu</th>
+                        <th scope="col">Chef de faction</th>
+                        <th scope="col">Elément de carrière</th>
+                        <th scope="col">Référence</th>
+                        <th scope="col">Catégorie de carrière</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for carriere in donnees%}
+                    <tr>
+                        <th scope="row">{{loop.index}}</th>
+                        <td>{{carriere.Type_carriere_libelle}}</td>
+                        <td><a href="{{url_for('un_individu', id_individu=carriere.idIndividu)}}">{{carriere.nomIndividu_1}}</a></td>
+                        <td>{{carriere.nomIndividu_2}}</td>
+                        <td>{{carriere.Element_de_carriere}}</td>
+                        <td>{{carriere.Référence_carriere}}</td>
+                        <td>{{carriere.Type_carriere_groupe}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            {% if pagination.pages > 1 %}
+                <nav aria-label="Navigation des pages">
+                    <ul class="pagination">
+                        {% for page in pagination.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('all_carrieres', page=page) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
         {%endif%}
     </div>
 

@@ -6,44 +6,71 @@
         <h1>Bienvenue sur le site de la prosopographie nobiliaire en Île-de-France</h1>
 
         {%if donnees%}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nom de baptême et Lignage de l'individu</th>
-                    <th scope="col">?</th>
-                    <th scope="col">?</th>
-                    <th scope="col">?</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {%for individu in donnees%}
-                <tr>
-                    <th scope="row">{{loop.index}}</th>
-                    <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.nomindividu}}</a></td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
+            {% if pagination.pages > 1 %}
+              <nav aria-label="Navigation des pages">
+                  <ul class="pagination">
+                      {% for page in pagination.iter_pages() %}
+                      {% if page %}
+                          <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                          <a class="page-link" href="{{ url_for('all_individus', page=page) }}">{{ page }}</a>
+                          </li>
+                      {% else %}
+                          <li class="page-item disabled"><span class="page-link">...</span></li>
+                      {% endif %}
+                      {% endfor %}
+                  </ul>
+              </nav>
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom de baptême et Lignage de l'individu</th>
+                        <th scope="col">Numéro dans le lignage</th>
+                        <th scope="col">Début d'apparition dans les textes</th>
+                        <th scope="col">FIn d'apparition dans les textes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for individu in donnees%}
+                    <tr>
+                        <th scope="row">{{loop.index}}</th>
+                        <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.nomindividu}}</a></td>
+                        {% if individu.numindividu and individu.numindividu != "NULL" %}
+                            <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.numindividu}}</a></td>
+                        {% else %}
+                           <td></td>
+                        {%endif %}
+                        {% if individu.debappindividu and individu.debappindividu != "NULL" %}
+                           <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.debappindividu}}</a></td>
+                        {% else %}
+                           <td></td>
+                        {%endif %}
+                        {% if individu.finappindividu and individu.finappindividu != "NULL" %}
+                           <td><a href="{{url_for('un_individu',id_individu=individu.identifindividu)}}">{{individu.finappindividu}}</a></td>
+                        {% else %}
+                           <td></td>
+                        {%endif %}
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            {% if pagination.pages > 1 %}
+            <nav aria-label="Navigation des pages">
+              <ul class="pagination">
+                {% for page in pagination.iter_pages() %}
+                  {% if page %}
+                    <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                      <a class="page-link" href="{{ url_for('all_individus', page=page) }}">{{ page }}</a>
+                    </li>
+                  {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </nav>
+            {% endif %}
         {%endif%}
-
-        {% if pagination.pages > 1 %}
-        <nav aria-label="Navigation des pages">
-          <ul class="pagination">
-            {% for page in pagination.iter_pages() %}
-              {% if page %}
-                <li class="page-item {% if page == pagination.page %}active{% endif %}">
-                  <a class="page-link" href="{{ url_for('all_individus', page=page) }}">{{ page }}</a>
-                </li>
-              {% else %}
-                <li class="page-item disabled"><span class="page-link">...</span></li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </nav>
-      {% endif %}
-      
     </div>
 
 {% endblock %}
