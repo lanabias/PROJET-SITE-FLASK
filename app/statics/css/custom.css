@@ -1,0 +1,109 @@
+/*the container must be positioned relative:*/
+        .autocomplete {
+          position: relative;
+          display: inline-block;
+        }
+        
+        input {
+          border: 1px solid transparent;
+          background-color: #f1f1f1;
+          padding: 10px;
+          font-size: 16px;
+        }
+        
+        input[type=text] {
+          background-color: #f1f1f1;
+          width: 100%;
+        }
+        
+        input[type=submit] {
+          background-color: DodgerBlue;
+          color: #fff;
+          cursor: pointer;
+        }
+        
+        .autocomplete-items {
+          position: absolute;
+          border: 1px solid #d4d4d4;
+          border-bottom: none;
+          border-top: none;
+          z-index: 99;
+/*position the autocomplete items to be the same width as the container:*/
+          top: 100%;
+          left: 0;
+          right: 0;
+        }
+        
+        .autocomplete-items div {
+          padding: 10px;
+          cursor: pointer;
+          background-color: #fff; 
+          border-bottom: 1px solid #d4d4d4; 
+        }
+        
+/*when hovering an item:*/
+        .autocomplete-items div:hover {
+          background-color: #e9e9e9; 
+        }
+        
+/*when navigating through the items using the arrow keys:*/
+        .autocomplete-active {
+          background-color: DodgerBlue !important; 
+          color: #ffffff; 
+        }
+
+/*style du menu*/
+        #navbarSupportedContent > ul > li {
+                display: inline-block;
+                list-style: none;
+                margin-right: 20px; /* Ajoute un espace entre les éléments */
+                }
+                
+                #navbarSupportedContent > ul > li > a {
+                color: #333; /* Couleur du texte des liens */
+                transition: color 0.2s ease; /* Ajoute une transition pour le survol */
+                }
+                
+                #navbarSupportedContent > ul > li > a:hover {
+                color: #007bff; /* Couleur du texte des liens au survol */
+                }
+                
+                .dropdown-menu {
+                background-color: #f9f9f9; /* Couleur de fond du menu déroulant */
+                border: none; /* Supprime la bordure */
+                box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Ajoute une ombre */
+                }
+                
+                .dropdown-item {
+                padding: 10px 20px; /* Espacement interne des éléments du menu déroulant */
+                }
+                
+                .dropdown-item:hover {
+                background-color: #f0f0f0; /* Couleur de fond au survol */
+                }
+/*Style du tableau de présentation d'un individu*/
+
+.row h2{text-align:center}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #001aff;
+    color: white;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #e16e6e;
+  }
+
+  
+
+  
