@@ -53,37 +53,55 @@
         }
 
 /*style du menu*/
-        #navbarSupportedContent > ul > li {
-                display: inline-block;
-                list-style: none;
-                margin-right: 20px; /* Ajoute un espace entre les éléments */
-                }
+
+.bg-light {
+  background-color: #e16e6e !important;
+}
+  .navbar-brand {
+    font-size:1.8em;
+    color:#d4d4d4;
+    background-color: #001aff;
+  }
+
+  #navbarSupportedContent > ul > li {
+    display: inline-block;
+    list-style: none;
+    margin-right: 20px; /* Ajoute un espace entre les éléments */
+    font-size: 1.6em;
+    }
+
                 
-                #navbarSupportedContent > ul > li > a {
-                color: #333; /* Couleur du texte des liens */
-                transition: color 0.2s ease; /* Ajoute une transition pour le survol */
-                }
+  #navbarSupportedContent > ul > li > a {
+    color: #333; /* Couleur du texte des liens */
+    transition: color 0.2s ease; /* Ajoute une transition pour le survol */
+    font-size: 1.6em;
+    }
                 
-                #navbarSupportedContent > ul > li > a:hover {
-                color: #007bff; /* Couleur du texte des liens au survol */
-                }
                 
-                .dropdown-menu {
-                background-color: #f9f9f9; /* Couleur de fond du menu déroulant */
-                border: none; /* Supprime la bordure */
-                box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Ajoute une ombre */
-                }
+  #navbarSupportedContent > ul > li > a:hover {
+    color: #001aff; /* Couleur du texte des liens au survol */
+    }
                 
-                .dropdown-item {
-                padding: 10px 20px; /* Espacement interne des éléments du menu déroulant */
-                }
+  .dropdown-menu {
+    background-color: #f9f9f9; /* Couleur de fond du menu déroulant */
+    border: none; /* Supprime la bordure */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Ajoute une ombre */
+    }
                 
-                .dropdown-item:hover {
-                background-color: #f0f0f0; /* Couleur de fond au survol */
-                }
+  .dropdown-item {
+    padding: 10px 20px; /* Espacement interne des éléments du menu déroulant */
+    }
+                
+  .dropdown-item:hover {
+    background-color: #f0f0f0; /* Couleur de fond au survol */
+    }
 /*Style du tableau de présentation d'un individu*/
 
-.row h2{text-align:center}
+.row h2{
+  margin-top: 2em;
+  margin-bottom:2em;
+  text-align:center;
+}
 
 table {
     border-collapse: collapse;
@@ -95,12 +113,16 @@ table {
     padding: 8px;
   }
   
-  th {
+ thead {
     background-color: #001aff;
-    color: white;
+    color: rgb(255, 255,255);
   }
   
-  tr:nth-child(even) {
+  tbody > tr {
+    color: rgb(0, 0,0);
+  }
+  
+  tbody > tr:nth-child(odd) {
     background-color: #e16e6e;
   }
 

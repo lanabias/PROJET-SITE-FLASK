@@ -26,20 +26,60 @@ def all_individus():
         })
     return render_template("pages/individus.html", donnees=donnees, pagination=pagination, sous_titre="Tous les individus")
 
+def search_wikidata(term, language="fr"):
+  """
+    Recherche un terme sur Wikidata et retourne le QID et l'URL du premier résultat.
+    
+    Args:
+        term (str): Terme à rechercher.
+        language (str): Langue de recherche (par défaut "fr").
+    
+    Returns:
+        dict: Dictionnaire contenant le QID et l'URL, ou None si aucun résultat.
+  """
+  try:
+      base_url = "https://www.wikidata.org/w/api.php"
+      params = {
+          "action": "wbsearchentities",
+          "format": "json",
+          "search": term,
+          "language": language,
+          "limit": 1  # Limite à un seul résultat
+      }
+      
+      response = requests.get(base_url,params=params)
+      response.raise_for_status()  # Vérifie si la requête a réussi
+      data = response.json()
+      print(data)
+      # Récupérer le QID de la première réponse
+      if 'search' in data and len(data['search']) > 0:
+        first_result = data['search'][0]
+        qid = first_result['id']
+        url = f"https://www.wikidata.org/wiki/{qid}"
+        return {"qid": qid, "url": url}
+      else:
+        return None  # Aucun résultat trouvé
+  except requests.exceptions.RequestException as e:
+      print(f"Erreur lors de la requête : {e}")
+      return None
+
 
 @app.route("/individus/<int:id_individu>")
 def un_individu(id_individu):
-  '''individu_1=IndIndividus.query.filter(IndIndividus.IND_id == id_individu)'''
+
   #Récupération de l'enregistrement des données sur l'identité de l'individu identifié par son identité
   individu_1 = IndIndividus.query.get(id_individu)
   
   # Rechercher un lien Wikipédia
   nom_complet=f"{individu_1.IND_prenom} {individu_1.IND_lignage}" if individu_1 else "Inconnu"
-  
+
+
+  # Recherche sur Wikidata
   wikidata_result = search_wikidata(nom_complet)
+  print(wikidata_result)
   if not wikidata_result:
     wikidata_search_url = f"https://www.wikidata.org/w/index.php?search={nom_complet.replace(' ', '+')}"
-    wikidata_result = {"url": wikidata_search_url}
+    wikidata_result = {'url': wikidata_search_url}
   
   carrieres_sortantes=[]
   
@@ -47,7 +87,7 @@ def un_individu(id_individu):
 
   if relations_carrieres_sortantes:
     for carriere in relations_carrieres_sortantes:
-      print(type(carriere))  # Vérifiez si c'est un objet ou un dictionnaire
+      
       #Récupération de l'enregistrement du chef de faction qui est à l'autre bout de la relation de carrière avec individu_1
       individu_2 = IndIndividus.query.get(carriere.IND_id_2)
 
@@ -183,38 +223,5 @@ def recherche():
     flash(f"La recherche a rencontré une erreur : {str(e)}", "error")
   return render_template("pages/resultats_recherche_individu.html", sous_titre="Recherche", form=form)
 
-def search_wikidata(term, language="fr"):
-    """
-    Recherche un terme sur Wikidata et retourne le QID et l'URL du premier résultat.
-    
-    Args:
-        term (str): Terme à rechercher.
-        language (str): Langue de recherche (par défaut "fr").
-    
-    Returns:
-        dict: Dictionnaire contenant le QID et l'URL, ou None si aucun résultat.
-    """
-    base_url = "https://www.wikidata.org/w/api.php"
-    params = {
-        "action": "wbsearchentities",
-        "format": "json",
-        "search": term,
-        "language": language,
-        "limit": 1  # Limite à un seul résultat
-    }
-    
-    response = requests.get(base_url, params=params)
-    
-    if response.status_code == 200:
-        data = response.json()
-        print(data)
-        search_results = data.get("search", [])
-        print(search_results)
-        
-        if search_results:
-            # Récupérer le premier résultat
-            qid = search_results[0]["id"]
-            url = f"https://www.wikidata.org/wiki/{qid}"
-            return {"qid": qid, "url": url}
-            print(QID,url)
-    return None
+
+
