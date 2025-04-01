@@ -8,10 +8,35 @@ from ..models.formulaire import Recherche
 @app.route("/")
 def accueil():
     return redirect(url_for("all_individus"))
+"""
+    Redirige l'url du serveur vers la page all_individus qui liste les individus de la base de données et constitue la page d'accueil.
+    
+    Args:
+        racine du site.
+      
+    
+    Returns:
+        l'url appelée par la root définie par la fonction all_individus.
+  """
 
 @app.route("/all_individus")
 @app.route("/all_individus/")
 def all_individus():
+    
+    """
+    définit la fonction qui généère ensuite le contenu de la rout affichant la liste de tous les individus de la base de données.
+    
+    Args:
+        aucun
+
+    Fonction : 
+       - construit le dictionnaire des données pour chaque individu trouvé dans la table des individus IndIndividus : identifia,t; nom, numéro de lignage, dates de début et de fin d'apparition dans les textes
+       - met en place une pagination des résultats trouvés avec 15 résultats par page
+    
+    Returns:
+        l'url pages/individus.html appelée par la root définie par la fonction all_individus, avec transfert des données du dictionnaire construitp our chaque individu et le paramétrage de la pagination
+    """
+
     page = request.args.get('page',1, type=int)
     pagination = IndIndividus.query.order_by(IndIndividus.IND_lignage).paginate(page=page,per_page=app.config["PER_PAGE"],error_out=False)
         
@@ -66,6 +91,32 @@ def search_wikidata(term, language="fr"):
 
 @app.route("/individus/<int:id_individu>")
 def un_individu(id_individu):
+  """
+    définit la fonction qui affiche le contenu de la page pour un in individu particulier. Les éléments suivants sont fournis :
+    - l'état civil de l'individu (numéro dans la base, naissance, mariage, décès, avec les estimations associées)
+    - la documentation établie avec un lien de complément vers la page correspondante Wikidata quand elle existe
+    - la liste des éléments de carrière de l'individu
+    
+    
+    Args:
+        id_individu : le numéro de l'individu dans la base de données, défini comme entier.
+
+    Fonction : 
+       - Recherche les informations de l'individu sur wikipedia et fournit l'url pour y parvenir
+       - Recherche les éléments "relations_carrieres_sortantes" de la carrière de l'individu quand ils existent : le dictionnaire de données "carrieres_sortantes" est mis à jour pour chaque élément trouvé.
+            Pour chaque élément de carrière trouvé sont stockés dans le dictionnaire :
+            * le patron pour lequel l'individu travaille (Individu_2)
+            * la description proprement dite de l'élément de carrière
+            * la référence documentaire dans laquelle la relation est identifiée. Attention, la base de données est en migration, il est possible que tous les éléments de la table de référence ne soient pas remplis.
+              (d'où la précaution : "if reference is not None:")
+            * La catégorie et le type de relation de carrière
+            * les dates de début et de fin de carrière
+            L'affichage est réalisé dans l'ordre chronologique (tri par l"Date_debut"). Il n'y a pas de pagination pour cette page.
+
+    
+    Returns:
+        l'url pages/un_individu.html est appelée par la route définie par la fonction un_individu, avec transfert des données du dictionnaire des informations sur létat civil, la documentation et la carrières quand cette dernière est connue
+    """
 
   #Récupération de l'enregistrement des données sur l'identité de l'individu identifié par son identité
   individu_1 = IndIndividus.query.get(id_individu)
@@ -131,10 +182,28 @@ def un_individu(id_individu):
 @app.route("/all_carrieres")
 @app.route("/all_carrieres/")
 def all_carrieres():
+  """
+    définit la fonction qui génère ensuite le contenu de la route affichant la liste de tous les éléments de carrière contenus dans la base de données.
+    
+    Args:
+        aucun
+
+    Fonction : 
+       - met en place une pagination des résultats trouvés avec 15 résultats par page
+       - construit le dictionnaire des données pour chaque élément de carrière trouvé dans la table Crr_carriere impliquant :
+          *deux individus individu1 et individu2 identifiés dans la table IndIndividus qui est en relation de type 1 vers n avec CrrCarriere. 
+          *les dates de début et de fin de l'élément de carrière
+          * la référence documentaire quand cette dernière existe
+          * la catégorie et lelibellé du type d'élément de carrière.
+        Les enregistremetns de la liste sont regroupés par type d'élément de carrière.
+       
+    
+    Returns:
+        l'url pages/toutes_carrieres.html appelée par la root définie par la fonction all_carrieres, avec transfert des données du dictionnaire des éléments de carrière et le paramétrage de la pagination
+    """
   page = request.args.get('page',1, type=int)
   pagination = CrrCarriere.query.paginate(page=page,per_page=app.config["PER_PAGE"],error_out=False)
   
-
   donnees = []  
   for item in pagination.items:
     #Récupération des individus associés dans une relation de carrière
@@ -174,11 +243,26 @@ def all_carrieres():
         "Type_carriere_libelle":type_relation.TYP_lib
       }) 
   donnees_triees = sorted(donnees, key=lambda x: x['Type_carriere_libelle'])
-
   return render_template("pages/toutes_carrieres.html", donnees=donnees_triees, pagination=pagination, sous_titre="Toutes les carrieres")
 
 @app.route("/recherche", methods=['GET', 'POST'])
 def recherche():
+  """
+    COnstruit un formulaire de recherche pour rechercher un individu par son nom de lignage et son nom de baptême.
+    
+    Args:
+        aucun
+    
+    FOnction :
+     - Récupère les informations de nom de lignage et de nom de baptême du formulaire rempli par l'utilisateur
+     - Définit la requête dans la base de données en fonction de ces entrées
+     - Remplit l'ensemble des objets IndIndividus qui constituent les enregistrements de la table INdINdividus qui correpsondent aux résultats associés à cette requête  
+     - Remplit les inputs du formulaire des textes entrées par l'utilisateur    Returns:
+
+    Returns   
+      renvoie à l'url pages/resultats_recherche_individu.html la liste "données" des enregistrements trouvés et les mots-clés du formulaire remplis par l'utilisateur
+      la procédure renvoie aussi l'absence d'information si rien n'est rempli dans le formulaire.
+  """
   form = Recherche() 
 
     # initialisation des données de retour dans le cas où il n'y ait pas de requête

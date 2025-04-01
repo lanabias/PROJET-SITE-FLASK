@@ -119,6 +119,7 @@ table {
   th, td {
     text-align: left;
     padding: 8px;
+    border: 2px solid;
   }
   
   .table-striped .thead-light {
