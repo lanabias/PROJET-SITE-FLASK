@@ -19,6 +19,7 @@ Pour installer-python-3
 
 
 Description des variables à entrer dans le fichier .env : 
+
 DEBUG=TRUE
 
 SQLALCHEMY_DATABASE_URI=sqlite:////home/lnabias/Documents/projet_python/noblesse.sqlite
