@@ -74,7 +74,7 @@
   #navbarSupportedContent > ul > li > a {
     color: #333; /* Couleur du texte des liens */
     transition: color 0.2s ease; /* Ajoute une transition pour le survol */
-    font-size: 1.6em;
+    font-size: 1.2em;
     }
                 
                 
@@ -98,9 +98,17 @@
 /*Style du tableau de présentation d'un individu*/
 
 .row h2{
-  margin-top: 2em;
-  margin-bottom:2em;
+  margin-top: 1.5em;
+  margin-bottom:1.5em;
   text-align:center;
+}
+
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #e16e6e; /* Fond rouge pour les lignes impaires */
+}
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: white; /* Fond blanc pour les lignes paires */
 }
 
 table {
@@ -113,7 +121,7 @@ table {
     padding: 8px;
   }
   
- thead {
+  .table-striped .thead-light {
     background-color: #001aff;
     color: rgb(255, 255,255);
   }
@@ -121,11 +129,3 @@ table {
   tbody > tr {
     color: rgb(0, 0,0);
   }
-  
-  tbody > tr:nth-child(odd) {
-    background-color: #e16e6e;
-  }
-
-  
-
-  

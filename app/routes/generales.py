@@ -203,7 +203,6 @@ def recherche():
               query_results = query_results.filter(IndIndividus.IND_prenom.ilike(f"%{nom_bapteme.lower()}%"))
               
               donnees = query_results.order_by(IndIndividus.IND_dat_deb_apparition).all()
-              print(f"Résultats de la recherche : {donnees}")  # Pour le débogage
 
               # Renvoi des filtres de recherche pour préremplissage du formulaire
               form.nom_individu.data = nom_individu

@@ -10,20 +10,21 @@
         <h2> Etat civil de l'individu </h2>
     </div>
 
-    <table class="table table-striped table-bordered">
-                <thead>
+    <table class="table table-striped table-borderd">
+        <thead class="thead-light">
 
-                    <tr>
-                            <th>Identifiant individu : {{donnee.IND_id}} </th>
-                            <th>NAISSANCE</th>
-                            <th>ETAT MARITAL</th>
-                            <th>DECES</th>
-                    </tr>
-                </thead>
+            <tr>
+                <th>Identifiant individu : {{donnee.IND_id}} </th>
+                <th>NAISSANCE</th>
+                <th>ETAT MARITAL</th>
+                <th>DECES</th>
+            </tr>
+         </thead>
 
                  <tbody> 
                     <tr>
                         <td>
+                            <div "col-sm-4 col-md-4 col-lg-3 mb-4">
                             {%if donnee.NUM_lignage and donnee.NUM_lignage!="NULL"%}
                                 <p><b>Nom de baptême</b> : {{donnee.IND_prenom}} {{donnee.NUM_lignage}}</p>
                             {%else%}
@@ -37,9 +38,10 @@
                             {%else%}
                                 <p>Sexe féminin</p>
                             {%endif%}
+                            </div>
                         </td>
-                        <td>        
-                            
+                        <td>
+                            <div "col-sm-4 col-md-4 col-lg-3 mb-4">       
                             {%if donnee.IND_dat_naissance and donnee.IND_dat_naissance!="NULL"%}
                                 <p><b>Date de naissance précise</b> : {{donnee.IND_dat_naissance}} </p> 
                             {%else%}
@@ -73,15 +75,19 @@
                             {%else%}
                                 <p>Lieu de naissance inconnu</p>
                             {%endif%}
+                            </div>
                         </td>
                         <td>
+                            <div "col-sm-4 col-md-4 col-lg-3 mb-4">
                             {%if donnee.IND_mariage=="O"%}
                                 <p>Marié</p>
                             {%else%}
                                 <p>Célibataire ou veuf</p>
                             {%endif%}
+                            </div>
                         </td>
                         <td>
+                            <div "col-sm-4 col-md-4 col-lg-3 mb-4">
                             {%if donnee.IND_dat_deces and donnee.IND_dat_deces!="NULL"%}
                                 <p><b>Date de décès précise</b> : {{donnee.IND_dat_deces}}</p> 
                             {%else%}
@@ -104,6 +110,7 @@
                             {%else%}
                                 <p>Lieu de décès inconnu</p>
                             {%endif%}
+                            </div>
                         </td>
                     </tr>
                 </tbody>

@@ -46,10 +46,10 @@
 
     <!-- affichage des résultats-->
     <h1>Résultats de la recherche </h1>
-            <div class="container">
+        <div class="container">
                     {%if donnees%}
-                        <table class="table">
-                            <thead>
+                        <table class="table table-striped table-borderd">
+                            <thead class="thead-light">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nom de baptême</th>
@@ -63,30 +63,48 @@
                             <tbody>
                                 {%for individu in donnees%}
                                 <tr>
-                                    <td scope="row">{{loop.index}}</td>
-                                    <td><a href="{{url_for('un_individu',id_individu=individu.IND_id)}}">{{individu.IND_prenom}}</a></td>
-                                    <td><a href="{{url_for('un_individu',id_individu=individu.IND_id)}}">{{individu.IND_lignage}}</a></td>
+                                    <td>
+                                        <div "col-sm-6 col-md-4 col-lg-3 mb-4">{{loop.index}}</div>
+                                    </td>
+                                    <td>
+                                        <div "col-sm-6 col-md-4 col-lg-3 mb-4"><a href="{{url_for('un_individu',id_individu=individu.IND_id)}}">{{individu.IND_prenom}}</a></div>
+                                    </td>
+                                    <td>
+                                        <div "col-sm-6 col-md-4 col-lg-3 mb-4"><a href="{{url_for('un_individu',id_individu=individu.IND_id)}}">{{individu.IND_lignage}}</a></div>
+                                    </td>
                                     {% if individu.NUM_lignage and individu.NUM_lignage != "NULL" %}
-                                        <td><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.NUM_lignage }}</a></td>
+                                        <td>
+                                            <div "col-sm-6 col-md-4 col-lg-3 mb-4"><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.NUM_lignage }}</a></div>
+                                        </td>
                                     {% else %}
-                                        <td></td>
+                                        <td>
+                                            <div "col-sm-6 col-md-4 col-lg-3 mb-4"></div>
+                                        </td>
                                     {% endif %}
                                     {% if individu.NUM_lignage and individu.IND_dat_deb_apparition != "NULL" %}
-                                        <td><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.IND_dat_deb_apparition}}</a></td>
+                                        <td>
+                                            <div "col-sm-6 col-md-4 col-lg-3 mb-4"><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.IND_dat_deb_apparition}}</a></div>
+                                        </td>
                                     {% else %}
-                                        <td></td>
+                                    <td>
+                                        <div "col-sm-6 col-md-4 col-lg-3 mb-4"></div>
+                                    </td>
                                     {% endif %}
                                     {% if individu.NUM_lignage and individu.IND_dat_fin_apparition != "NULL" %}
-                                        <td><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.IND_dat_fin_apparition}}</a></td>
+                                        <td>
+                                            <div "col-sm-6 col-md-4 col-lg-3 mb-4"><a href="{{ url_for('un_individu', id_individu=individu.IND_id) }}">{{ individu.IND_dat_fin_apparition}}</a></div>
+                                        </td>
                                     {% else %}
-                                        <td></td>
+                                    <td>
+                                        <div "col-sm-6 col-md-4 col-lg-3 mb-4"></div>
+                                    </td>
                                     {% endif %}
                                 </tr>
                                 {%endfor%}
                             </tbody>
                         </table>
                     {%endif%}
-            </div>
+        </div>
 {%endif%}
 </div>
 
