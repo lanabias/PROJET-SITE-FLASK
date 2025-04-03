@@ -1,5 +1,5 @@
 
-1) Créer un dossier destiné à stocker l'application
+1) Créer un dossier destiné à stocker l'application : mkdir nom_du_projet
 2) Taper dans ce répertoire utilisateur la commande : git clone https://github.com/lanabias/PROJET-SITE-FLASK.git
 3) Assurez-vous que python est bien installé en regardant la version : python3 --version. Si python3 n'est pas reconnu, installez-le :
 Pour installer-python-3
