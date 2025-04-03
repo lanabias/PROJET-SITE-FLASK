@@ -128,7 +128,7 @@ table {
     border: 2px solid;
   }
   
-  .table-striped .thead-light {
+  .table-striped, .thead-light {
     background-color: #001aff;
     color: rgb(255, 255,255);
   }
