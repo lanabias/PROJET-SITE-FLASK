@@ -75,7 +75,7 @@ def search_wikidata(term, language="fr"):
       response = requests.get(base_url,params=params)
       response.raise_for_status()  # Vérifie si la requête a réussi
       data = response.json()
-      print(data)
+
       # Récupérer le QID de la première réponse
       if 'search' in data and len(data['search']) > 0:
         first_result = data['search'][0]
@@ -127,7 +127,6 @@ def un_individu(id_individu):
 
   # Recherche sur Wikidata
   wikidata_result = search_wikidata(nom_complet)
-  print(wikidata_result)
   if not wikidata_result:
     wikidata_search_url = f"https://www.wikidata.org/w/index.php?search={nom_complet.replace(' ', '+')}"
     wikidata_result = {'url': wikidata_search_url}
