@@ -61,10 +61,10 @@
                             <p><b>Dates d'apparition dans les textes :</b></p><!--Affichage des dates de début et fin d'apparition dans les textes-->
                                         {%if donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition!="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition!="NULL"%}
                                             <p>Entre ntre {{donnee.IND_dat_deb_apparition}} et {{donnee.IND_dat_fin_apparition}}</p> 
-                                        {%elif donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition=="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition!="NULL"%}
-                                            <p>Date de début d'apparition des textes le {{donnee.IND_dat_deb_apparition}} et date de fin d'apparition inconnue</p>
                                         {%elif donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition!="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition=="NULL"%}
-                                            <p>date de fin d'apparition dans les textes le{{donnee.IND_dat_fin_apparition}} et début d'apparition dans les textes inconnu</p>
+                                            <p>Date de début d'apparition des textes le {{donnee.IND_dat_deb_apparition}} et date de fin d'apparition inconnue</p>
+                                        {%elif donnee.IND_dat_deb_apparition and donnee.IND_dat_deb_apparition=="NULL" and donnee.IND_dat_fin_apparition and donnee.IND_dat_fin_apparition!="NULL"%}
+                                            <p>Date de début d'apparition dans les textes inconnue et date de fin d'apparition dans les textes le{{donnee.IND_dat_fin_apparition}}</p>
                                         {%else%}
                                             <p>Dates d'apparition dans les textes inconnues</p>
                                         {%endif%}

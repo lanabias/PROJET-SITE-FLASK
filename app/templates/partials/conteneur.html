@@ -14,20 +14,26 @@
 
 <body>
     <body>
+        <!--Affichage du menu supérieur sur chaque page-->
         <nav class="navbar navbar-expand-lg bg-light">
           <div class="container-fluid">
+            <!--Entrée de type accueil et intitulé du site-->
             <a class="navbar-brand" href="{{ url_for('all_individus',page=1) }}">Prosopographie nobiliaire francilienne 1180-1436 </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>  
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!--Liste des carrières-->
                 <li class="nav-item">
                   <a class="nav-link active" href="{{ url_for('all_carrieres') }}">Liste de carrieres</a>
                 </li>
+                <!--liste des individus-->
                 <li class="nav-item active">
                   <a class="nav-link active" href="{{ url_for('all_individus') }}">Liste de nobles</a>
                 </li>
+                <!--formulaire de recherche et liste de réusltats-->
                 <li class="nav-item active">
                   <a class="nav-link active" href="{{ url_for('recherche') }}">Recherche</a>
                 </li>     
@@ -35,6 +41,7 @@
             </div>    
           </div>
         </nav>
+        <!--Affichage de messages d'erreur de remplissage du formulaire (commande flash)-->
         <div class="'message">
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
