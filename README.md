@@ -37,11 +37,17 @@ Pour installer-python-3
 
 
 Description des variables à entrer dans le fichier .env : 
+
 DEBUG=TRUE
+
 SQLALCHEMY_DATABASE_URI=sqlite:////chemin_absolu_vers_racine_application_meme_niveau_fichier_app/noblesse.sqlite
+
 PER_PAGE=15
+
 WTF_CSRF_ENABLE=TRUE
+
 SECRET_KEY à définir
+
 
 
 
