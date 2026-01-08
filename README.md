@@ -23,9 +23,9 @@ Pour installer-python-3
    
 9) Création de l'environnement virtuel : exécuter la commande virtualenv env -p python3
     
-11) Le fichier de la base de données en .sqlite se trouve à la racine de l'applicatio, au même niveau que le fichier run.py : ne pas le modifier.
+11) Le fichier de la base de données en .sqlite se trouve à la racine de l'application, au même niveau que le fichier run.py : ne pas le modifier.
     
-13) Créer le ficheir .env (avec vim par exemple) à côté du fichier run.py en faisant touch .env au niveau de la racine de l'application. Insérer dans ce fichier les variables décrites dans le fichier README ci-dessous.
+13) Créer le ficheir .env à côté du fichier run.py en faisant touch .env au niveau de la racine de l'application. Insérer dans ce fichier les variables décrites dans le fichier README ci-dessous.
     
 6) Activer l'environnement virtuel en exécutant source env/bin/activate
    
@@ -42,6 +42,7 @@ SQLALCHEMY_DATABASE_URI=sqlite:////chemin_absolu_vers_racine_application_meme_ni
 PER_PAGE=15
 WTF_CSRF_ENABLE=TRUE
 SECRET_KEY à définir
+
 
 
 
