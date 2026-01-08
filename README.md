@@ -12,7 +12,9 @@ Pour installer-python-3
     Dans le terminal, tapez : sudo apt-get install python3
    
     Entrez votre mot de passe, puis tapez Y pour lancer l’installation (NdT : ou sudo apt-get -y install python3 pour éviter de taper Y à chaque fois). Notez qu’il est fort probable que Python soit déjà installé (NdT: la commande dpkg -l python3 permet de savoir si Python 3 est déjà installé).
+   
     Il pourrait être interessant d'installer vim s'il n'est pas en place. Pour cela, exécuter sudo apt install vim
+   
 4 ) Installer les modules pip et virtualenv : exécuter sudo apt install python3-pip et sudo apt install virtualenv
 5) Entrer dans le répertoire de l'application
 6) Vous notez l'existence d'un répertoire documentation qui contient les explications du contexte du projet et le modèle de la base de données. Ce répertoire n'est pas utilisé par l'application.
@@ -31,5 +33,6 @@ SQLALCHEMY_DATABASE_URI=sqlite:////chemin_absolu_vers_racine_application_meme_ni
 PER_PAGE=15
 WTF_CSRF_ENABLE=TRUE
 SECRET_KEY à définir
+
 
 
